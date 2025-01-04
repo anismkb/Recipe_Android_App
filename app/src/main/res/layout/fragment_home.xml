@@ -79,7 +79,10 @@
                             android:id="@+id/image_rand"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/accent"></ImageView>
+                            android:background="@color/accent"
+                            android:scaleType="centerCrop"
+                            >
+                        </ImageView>
 
                     </androidx.cardview.widget.CardView>
 
