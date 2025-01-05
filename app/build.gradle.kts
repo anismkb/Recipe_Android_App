@@ -50,6 +50,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //j'ai ajouter ca
+    //implementation ("androidx.core:core:1.2.0")
+
     //navigation componenet
     val nav_version = "2.8.4"
     //implementation("androidx.navigation:navigation-fragment:$nav_version")
@@ -74,6 +77,13 @@ dependencies {
     //for images
     implementation("com.github.bumptech.glide:glide:4.12.0")
 
+    //videoModel mvvm
+    val lifecycle_version = "2.4.0-rc01"
+    //val lifecycle_version = "2.8.7"
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
+    //implementation ("android.arch.lifecycle:extensions:1.1.0")
+    //implementation ("android.lifecycle:extensions:1.1.0")
 
 
 }

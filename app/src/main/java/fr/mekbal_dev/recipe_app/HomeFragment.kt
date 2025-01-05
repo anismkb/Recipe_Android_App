@@ -1,28 +1,25 @@
 package fr.mekbal_dev.recipe_app
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.customview.widget.ViewDragHelper.Callback
+import androidx.lifecycle.Observer
 import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
 import fr.mekbal_dev.recipe_app.pojo.Meal
-import fr.mekbal_dev.recipe_app.pojo.meal_list
-import fr.mekbal_dev.recipe_app.retrofit.RetrofitInstance
-import retrofit2.Call
-import retrofit2.Response
+import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
 
 
 class HomeFragment : Fragment() {
     // TODO: Rename and change types of parameters
-
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var homemvvm: HomeViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        homemvvm = ViewModelProvider(this).get(HomeViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -36,23 +33,18 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        homemvvm.getRandomMeal();
+        observerRandomMeal()
+    }
 
-        RetrofitInstance.api.getRandomMeal().enqueue(object : retrofit2.Callback<meal_list>{
-            override fun onResponse(call: Call<meal_list>, response: Response<meal_list>) {
-                if(response.body() != null){
-                    val randomMeal: Meal = response.body()!!.meals[0]
-                    Glide.with(this@HomeFragment).load(randomMeal.strMealThumb).into(binding.imageRand)
-                }else{
-                    return
-                }
+    private fun observerRandomMeal() {
+        homemvvm.observeRandomMealLivedata().observe(viewLifecycleOwner, object : Observer<Meal>{
+            override fun onChanged(value: Meal) {
+                Glide.with(this@HomeFragment)
+                    .load(value.strMealThumb)
+                    .into(binding.imageRand)
             }
-
-            override fun onFailure(call: Call<meal_list>, t: Throwable) {
-                Log.d("HomeFragment", t.message.toString())
-            }
-
         })
-
     }
 
 
