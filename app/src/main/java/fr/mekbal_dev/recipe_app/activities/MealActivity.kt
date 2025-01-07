@@ -5,6 +5,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.HomeFragment
 import fr.mekbal_dev.recipe_app.R
 import fr.mekbal_dev.recipe_app.databinding.ActivityMealBinding
@@ -21,6 +22,15 @@ class MealActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMealBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        getMealInformationIntent()
+        setInformationInViews()
+    }
+
+    private fun setInformationInViews() {
+        Glide.with(applicationContext)
+            .load(mealThumb).into(binding.mealImageDetails)
+
+        binding.collapsingToolbar.title = mealName
     }
 
     private fun getMealInformationIntent() {
