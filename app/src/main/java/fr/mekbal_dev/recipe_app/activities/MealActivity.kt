@@ -5,17 +5,28 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import fr.mekbal_dev.recipe_app.HomeFragment
 import fr.mekbal_dev.recipe_app.R
+import fr.mekbal_dev.recipe_app.databinding.ActivityMealBinding
 
 class MealActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityMealBinding
+    private lateinit var mealName:String
+    private lateinit var mealId:String
+    private lateinit var mealThumb:String
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_meal)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = ActivityMealBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+    }
+
+    private fun getMealInformationIntent() {
+        val intent = intent
+        mealId = intent.getStringExtra(HomeFragment.MEAL_ID)!!
+        mealName= intent.getStringExtra(HomeFragment.MEAL_NAME)!!
+        mealThumb = intent.getStringExtra(HomeFragment.MEAL_THUMB)!!
     }
 }
