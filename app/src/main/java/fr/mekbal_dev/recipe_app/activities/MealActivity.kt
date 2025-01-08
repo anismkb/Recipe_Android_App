@@ -5,10 +5,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.HomeFragment
 import fr.mekbal_dev.recipe_app.R
 import fr.mekbal_dev.recipe_app.databinding.ActivityMealBinding
+import fr.mekbal_dev.recipe_app.pojo.Meal
+import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
+import fr.mekbal_dev.recipe_app.viewmodel.MealViewModel
 
 class MealActivity : AppCompatActivity() {
 
@@ -16,6 +21,7 @@ class MealActivity : AppCompatActivity() {
     private lateinit var mealName:String
     private lateinit var mealId:String
     private lateinit var mealThumb:String
+    private lateinit var mealMVVM:MealViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,6 +30,20 @@ class MealActivity : AppCompatActivity() {
         setContentView(binding.root)
         getMealInformationIntent()
         setInformationInViews()
+        mealMVVM = ViewModelProvider(this).get(MealViewModel::class.java)
+        mealMVVM.getMealById(mealId)
+        observerMealDetailsLiveData()
+    }
+
+    private fun observerMealDetailsLiveData() {
+        mealMVVM.observerMealDetailsLiveData().observe(this, object : Observer<Meal> {
+            override fun onChanged(value: Meal) {
+                binding.category.text = "Category : ${value.strCategory}"
+                binding.area.text = "Area : ${value.strArea}"
+                binding.description.text = "${value.strInstructions}"
+            }
+
+        }) 
     }
 
     private fun setInformationInViews() {

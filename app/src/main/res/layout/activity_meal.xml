@@ -79,7 +79,7 @@
                     app:srcCompat="@drawable/category" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -94,7 +94,7 @@
                     app:srcCompat="@drawable/ic_location" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/area"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -116,7 +116,7 @@
                 android:text="- Instruction" />
 
             <TextView
-                android:id="@+id/Text2"
+                android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
