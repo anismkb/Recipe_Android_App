@@ -68,7 +68,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/_20sdp"
                 android:layout_marginTop="@dimen/_20sdp"
-                android:layout_marginEnd="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_55sdp"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -131,6 +131,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progres_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminate="true"

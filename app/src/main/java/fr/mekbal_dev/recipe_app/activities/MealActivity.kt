@@ -1,6 +1,9 @@
 package fr.mekbal_dev.recipe_app.activities
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -21,6 +24,7 @@ class MealActivity : AppCompatActivity() {
     private lateinit var mealName:String
     private lateinit var mealId:String
     private lateinit var mealThumb:String
+    private lateinit var YoutubLink:String
     private lateinit var mealMVVM:MealViewModel
 
 
@@ -33,6 +37,15 @@ class MealActivity : AppCompatActivity() {
         mealMVVM = ViewModelProvider(this).get(MealViewModel::class.java)
         mealMVVM.getMealById(mealId)
         observerMealDetailsLiveData()
+        LoadingCase()
+        onYoutubeImageClick()
+    }
+
+    private fun onYoutubeImageClick() {
+        binding.Youtube.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(YoutubLink))
+            startActivity(intent)
+        }
     }
 
     private fun observerMealDetailsLiveData() {
@@ -41,6 +54,8 @@ class MealActivity : AppCompatActivity() {
                 binding.category.text = "Category : ${value.strCategory}"
                 binding.area.text = "Area : ${value.strArea}"
                 binding.description.text = "${value.strInstructions}"
+                YoutubLink= value.strYoutube
+                onResponseCase()
             }
 
         }) 
@@ -60,5 +75,19 @@ class MealActivity : AppCompatActivity() {
         mealId = intent.getStringExtra(HomeFragment.MEAL_ID)!!
         mealName= intent.getStringExtra(HomeFragment.MEAL_NAME)!!
         mealThumb = intent.getStringExtra(HomeFragment.MEAL_THUMB)!!
+    }
+
+    private fun LoadingCase(){
+        binding.progresBar.visibility = View.VISIBLE
+        binding.description.visibility = View.INVISIBLE
+        binding.category.visibility = View.INVISIBLE
+        binding.area.visibility = View.INVISIBLE
+    }
+
+    private fun onResponseCase(){
+        binding.progresBar.visibility = View.INVISIBLE
+        binding.description.visibility = View.VISIBLE
+        binding.category.visibility = View.VISIBLE
+        binding.area.visibility = View.VISIBLE
     }
 }
