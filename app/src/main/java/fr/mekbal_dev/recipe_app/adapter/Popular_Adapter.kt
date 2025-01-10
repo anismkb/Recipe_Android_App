@@ -10,6 +10,7 @@ import fr.mekbal_dev.recipe_app.pojo.CategoryMeal
 class Popular_Adapter(): RecyclerView.Adapter<Popular_Adapter.PopularMealViewHolder>() {
 
     private var mealList = ArrayList<CategoryMeal>()
+    lateinit var onItemClick:((CategoryMeal)->Unit)
 
     fun setMeals(mealsList: List<CategoryMeal>){
         this.mealList = mealsList as ArrayList<CategoryMeal>
@@ -28,6 +29,10 @@ class Popular_Adapter(): RecyclerView.Adapter<Popular_Adapter.PopularMealViewHol
         Glide.with(holder.itemView)
             .load(mealList[position].strMealThumb)
             .into(holder.binding.imgPopular)
+
+        holder.itemView.setOnClickListener{
+            onItemClick.invoke(mealList[position])
+        }
     }
 
     class PopularMealViewHolder(val binding: PopularItemsBinding):RecyclerView.ViewHolder(binding.root){
