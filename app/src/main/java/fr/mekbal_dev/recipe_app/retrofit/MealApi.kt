@@ -1,5 +1,6 @@
 package fr.mekbal_dev.recipe_app.retrofit
 
+import fr.mekbal_dev.recipe_app.pojo.List_Categories
 import retrofit2.Call
 import fr.mekbal_dev.recipe_app.pojo.meal_list
 import retrofit2.http.GET
@@ -12,4 +13,8 @@ interface MealApi {
 
     @GET("lookup.php?")
     fun getMealById(@Query("i") id:String):Call<meal_list>
+
+    @GET("filter.php?")
+    fun getPopularItems(@Query("c") category:String):Call<List_Categories>
+
 }

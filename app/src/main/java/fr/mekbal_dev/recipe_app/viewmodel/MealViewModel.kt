@@ -31,6 +31,8 @@ class MealViewModel : ViewModel(){
         })
     }
 
+
+
     fun observerMealDetailsLiveData():LiveData<Meal>{
         return DetailsMeal;
     }

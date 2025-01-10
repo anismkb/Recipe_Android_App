@@ -7,10 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import com.bumptech.glide.Glide
+
 import fr.mekbal_dev.recipe_app.activities.MealActivity
+import fr.mekbal_dev.recipe_app.adapter.Popular_Adapter
 import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
+import fr.mekbal_dev.recipe_app.pojo.CategoryMeal
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
 
@@ -20,6 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homemvvm: HomeViewModel
     private lateinit var randomMeal: Meal
+    private  lateinit var popularAdapter: Popular_Adapter
 
     companion object{
         const val MEAL_ID = "fr.mekbal_dev.recipe_app.idMeal"
@@ -29,6 +34,7 @@ class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homemvvm = ViewModelProvider(this).get(HomeViewModel::class.java)
+        popularAdapter = Popular_Adapter()
     }
 
     override fun onCreateView(
@@ -42,9 +48,27 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homemvvm.getRandomMeal();
+        homemvvm.getRandomMeal()
         observerRandomMeal()
         onRandomMealClick()
+
+        homemvvm.getPopularItems()
+        observePopulatItems()
+        preparePopularItemsRecyclerViews()
+    }
+
+    private fun preparePopularItemsRecyclerViews() {
+        binding.popularRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, HORIZONTAL, false)
+            adapter = popularAdapter
+        }
+    }
+
+    private fun observePopulatItems() {
+        homemvvm.observerPopularItemsLiveData().observe(viewLifecycleOwner, {
+            mealList ->
+                popularAdapter.setMeals(mealsList = mealList as List<CategoryMeal>)
+        })
     }
 
     private fun onRandomMealClick() {
