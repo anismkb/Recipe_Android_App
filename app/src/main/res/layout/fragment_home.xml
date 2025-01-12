@@ -119,9 +119,11 @@
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        app:cardBackgroundColor="@color/accent">
 
                         <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/category_rycle_view"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:scrollbars="none"

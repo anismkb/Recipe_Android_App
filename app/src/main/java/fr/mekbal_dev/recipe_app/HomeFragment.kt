@@ -3,18 +3,24 @@ package fr.mekbal_dev.recipe_app
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
+import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.bumptech.glide.Glide
 
 import fr.mekbal_dev.recipe_app.activities.MealActivity
+import fr.mekbal_dev.recipe_app.adapter.Category_Adapter
 import fr.mekbal_dev.recipe_app.adapter.Popular_Adapter
 import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
-import fr.mekbal_dev.recipe_app.pojo.CategoryMeal
+import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
 
@@ -25,12 +31,14 @@ class HomeFragment : Fragment() {
     private lateinit var homemvvm: HomeViewModel
     private lateinit var randomMeal: Meal
     private  lateinit var popularAdapter: Popular_Adapter
+    private lateinit var categoryAdapter: Category_Adapter
 
     companion object{
         const val MEAL_ID = "fr.mekbal_dev.recipe_app.idMeal"
         const val MEAL_NAME = "fr.mekbal_dev.recipe_app.nameMeal"
         const val MEAL_THUMB = "fr.mekbal_dev.recipe_app.thumbMeal"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         homemvvm = ViewModelProvider(this).get(HomeViewModel::class.java)
@@ -57,6 +65,25 @@ class HomeFragment : Fragment() {
         preparePopularItemsRecyclerViews()
 
         onpopularItemClick()
+
+        homemvvm.getAllCategories()
+        observerAllCategories()
+        prepareAllCategoriesItemsRecycleViews()
+    }
+
+    private fun prepareAllCategoriesItemsRecycleViews() {
+        categoryAdapter = Category_Adapter()
+        binding.categoryRycleView.apply {
+            layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
+            adapter = categoryAdapter
+        }
+    }
+
+    private fun observerAllCategories() {
+        homemvvm.observeAllCategoriesLiveData().observe(viewLifecycleOwner, Observer{
+            categories ->
+                categoryAdapter.setCategoryList(categories)
+        })
     }
 
     private fun onpopularItemClick() {
@@ -80,7 +107,7 @@ class HomeFragment : Fragment() {
     private fun observePopulatItems() {
         homemvvm.observerPopularItemsLiveData().observe(viewLifecycleOwner, {
             mealList ->
-                popularAdapter.setMeals(mealsList = mealList as List<CategoryMeal>)
+                popularAdapter.setMeals(mealsList = mealList as List<MealsByCategory>)
         })
     }
 

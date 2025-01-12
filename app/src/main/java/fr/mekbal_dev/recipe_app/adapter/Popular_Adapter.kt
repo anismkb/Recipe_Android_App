@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.databinding.PopularItemsBinding
-import fr.mekbal_dev.recipe_app.pojo.CategoryMeal
+import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
 
 class Popular_Adapter(): RecyclerView.Adapter<Popular_Adapter.PopularMealViewHolder>() {
 
-    private var mealList = ArrayList<CategoryMeal>()
-    lateinit var onItemClick:((CategoryMeal)->Unit)
+    private var mealList = ArrayList<MealsByCategory>()
+    lateinit var onItemClick:((MealsByCategory)->Unit)
 
-    fun setMeals(mealsList: List<CategoryMeal>){
-        this.mealList = mealsList as ArrayList<CategoryMeal>
+    fun setMeals(mealsList: List<MealsByCategory>){
+        this.mealList = mealsList as ArrayList<MealsByCategory>
         notifyDataSetChanged() // notify to update the views
     }
 
