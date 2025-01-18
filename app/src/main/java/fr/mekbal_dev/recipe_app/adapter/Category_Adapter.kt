@@ -10,6 +10,7 @@ import fr.mekbal_dev.recipe_app.pojo.Category
 class Category_Adapter: RecyclerView.Adapter<Category_Adapter.CategoryViewHolder>(){
 
     private var categoriesList = ArrayList<Category>()
+    var CategorySelected : ((Category)->Unit)? = null
 
     fun setCategoryList(categoriesList : List<Category>){
         this.categoriesList=categoriesList as ArrayList<Category>
@@ -31,6 +32,9 @@ class Category_Adapter: RecyclerView.Adapter<Category_Adapter.CategoryViewHolder
             .load(categoriesList[position].strCategoryThumb)
             .into(holder.binding.categoryImage)
         holder.binding.categoryName.text = categoriesList[position].strCategory
+        holder.itemView.setOnClickListener {
+            CategorySelected!!.invoke(categoriesList[position])
+        }
     }
 
 }

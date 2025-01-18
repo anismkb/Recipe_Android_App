@@ -15,11 +15,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.bumptech.glide.Glide
+import fr.mekbal_dev.recipe_app.activities.CategoryMealsActivity
 
 import fr.mekbal_dev.recipe_app.activities.MealActivity
 import fr.mekbal_dev.recipe_app.adapter.Category_Adapter
 import fr.mekbal_dev.recipe_app.adapter.Popular_Adapter
 import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
+import fr.mekbal_dev.recipe_app.pojo.Category
 import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
@@ -37,6 +39,7 @@ class HomeFragment : Fragment() {
         const val MEAL_ID = "fr.mekbal_dev.recipe_app.idMeal"
         const val MEAL_NAME = "fr.mekbal_dev.recipe_app.nameMeal"
         const val MEAL_THUMB = "fr.mekbal_dev.recipe_app.thumbMeal"
+        const val NAME_CATEGORY = "fr.mekbal_dev.recipe_app.nameCategory"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,6 +72,16 @@ class HomeFragment : Fragment() {
         homemvvm.getAllCategories()
         observerAllCategories()
         prepareAllCategoriesItemsRecycleViews()
+
+        categoryClick()
+    }
+
+    private fun categoryClick() {
+        categoryAdapter.CategorySelected={Category->
+            val intent = Intent(activity, CategoryMealsActivity::class.java)
+            intent.putExtra(NAME_CATEGORY, Category.strCategory)
+            startActivity(intent)
+        }
     }
 
     private fun prepareAllCategoriesItemsRecycleViews() {
