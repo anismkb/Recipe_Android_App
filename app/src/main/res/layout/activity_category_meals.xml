@@ -25,6 +25,7 @@
             android:layout_marginBottom="@dimen/_20sdp"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reycle_view_category_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 

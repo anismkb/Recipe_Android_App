@@ -8,8 +8,10 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import fr.mekbal_dev.recipe_app.HomeFragment
 import fr.mekbal_dev.recipe_app.R
+import fr.mekbal_dev.recipe_app.adapter.MealsCategory_Adapter
 import fr.mekbal_dev.recipe_app.databinding.ActivityCategoryMealsBinding
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
@@ -19,6 +21,7 @@ class CategoryMealsActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityCategoryMealsBinding
     lateinit var mealsByCategoryViewModel: MealsByCategoryViewModel
+    lateinit var mealscategoryAdapter: MealsCategory_Adapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,16 +29,26 @@ class CategoryMealsActivity : AppCompatActivity() {
         setContentView(binding.root)
         mealsByCategoryViewModel = ViewModelProvider(this)[MealsByCategoryViewModel::class.java]
 
+        prepareRecyclerView()
+
         mealsByCategoryViewModel.getMealsByCategoy(intent.getStringExtra(HomeFragment.NAME_CATEGORY)!!)
         observeMealsByCategory()
+
     }
 
     private fun observeMealsByCategory() {
         mealsByCategoryViewModel.observeMealsByCategory().observe(this, Observer{ MealsList ->
-            MealsList.forEach {
-                Log.d("test log ", it.strMeal)
-            }
+            mealscategoryAdapter.setMealsList(MealsList)
+            binding.cont.text = mealscategoryAdapter.itemCount.toString()
         })
+    }
+
+    private fun prepareRecyclerView(){
+        mealscategoryAdapter = MealsCategory_Adapter()
+        binding.reycleViewCategoryItem.apply {
+            layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+            adapter = mealscategoryAdapter
+        }
     }
 
 
