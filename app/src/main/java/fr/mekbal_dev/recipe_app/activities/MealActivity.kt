@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -13,10 +14,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.HomeFragment
 import fr.mekbal_dev.recipe_app.R
+import fr.mekbal_dev.recipe_app.database.MealDataBase
 import fr.mekbal_dev.recipe_app.databinding.ActivityMealBinding
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
 import fr.mekbal_dev.recipe_app.viewmodel.MealViewModel
+import fr.mekbal_dev.recipe_app.viewmodel.MealViewModelFactory
 
 class MealActivity : AppCompatActivity() {
 
@@ -26,6 +29,7 @@ class MealActivity : AppCompatActivity() {
     private lateinit var mealThumb:String
     private lateinit var YoutubLink:String
     private lateinit var mealMVVM:MealViewModel
+    private var favmeal:Meal?=null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,11 +38,22 @@ class MealActivity : AppCompatActivity() {
         setContentView(binding.root)
         getMealInformationIntent()
         setInformationInViews()
-        mealMVVM = ViewModelProvider(this).get(MealViewModel::class.java)
+
+        val database = MealDataBase.getInstance(this)
+        val viewModelFactory = MealViewModelFactory(database)
+        mealMVVM = ViewModelProvider(this, viewModelFactory).get(MealViewModel::class.java)
         mealMVVM.getMealById(mealId)
         observerMealDetailsLiveData()
         LoadingCase()
         onYoutubeImageClick()
+        onFavoritClick()
+    }
+
+    private fun onFavoritClick() {
+        binding.favButtom.setOnClickListener{
+            favmeal?.let { it1 -> mealMVVM.insertFavMeal(it1) }
+            Toast.makeText(this, "Meal saved", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onYoutubeImageClick() {
@@ -51,6 +66,7 @@ class MealActivity : AppCompatActivity() {
     private fun observerMealDetailsLiveData() {
         mealMVVM.observerMealDetailsLiveData().observe(this, object : Observer<Meal> {
             override fun onChanged(value: Meal) {
+                favmeal = value
                 binding.category.text = "Category : ${value.strCategory}"
                 binding.area.text = "Area : ${value.strArea}"
                 binding.description.text = "${value.strInstructions}"

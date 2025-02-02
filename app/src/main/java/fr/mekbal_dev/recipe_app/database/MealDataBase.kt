@@ -18,14 +18,14 @@ abstract class MealDataBase : RoomDatabase() {
         @Volatile
         var db: MealDataBase? = null
 
-        @Synchronized
+        @Synchronized // 1 thread pour cette instance
         fun getInstance(context: Context): MealDataBase{
             if(db == null){
                 db = Room.databaseBuilder(
                     context,
                     MealDataBase::class.java,
                     "databse-meal"
-                ).fallbackToDestructiveMigration().build()
+                ).fallbackToDestructiveMigration().build() //pour le rebuild
             }
 
             return db as MealDataBase

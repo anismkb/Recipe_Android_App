@@ -5,14 +5,19 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import fr.mekbal_dev.recipe_app.database.MealDao
+import fr.mekbal_dev.recipe_app.database.MealDataBase
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.pojo.meal_list
 import fr.mekbal_dev.recipe_app.retrofit.RetrofitInstance
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 import kotlin.math.log
 
-class MealViewModel : ViewModel(){
+class MealViewModel(val mealDatabase : MealDataBase): ViewModel(){
 
     private var DetailsMeal = MutableLiveData<Meal>();
 
@@ -31,9 +36,20 @@ class MealViewModel : ViewModel(){
         })
     }
 
-
-
     fun observerMealDetailsLiveData():LiveData<Meal>{
         return DetailsMeal;
     }
+
+    fun insertFavMeal(meal: Meal) {
+        viewModelScope.launch(Dispatchers.IO) {
+            mealDatabase.mealDao().InsertMeal(meal)
+        }
+    }
+
+    fun deleteFavMeal(meal: Meal){
+        viewModelScope.launch {
+            mealDatabase.mealDao().DeleteMeal(meal);
+        }
+    }
+
 }

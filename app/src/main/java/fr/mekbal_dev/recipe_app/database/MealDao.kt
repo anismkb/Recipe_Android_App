@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Update
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import retrofit2.http.Query
@@ -12,7 +13,7 @@ import retrofit2.http.Query
 @Dao
 interface MealDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun InsertMeal(meal : Meal)
 
     @Update
@@ -23,4 +24,7 @@ interface MealDao {
 
     @androidx.room.Query("SELECT * FROM Meal")
     fun getAll(): LiveData<List<Meal>>
+
+    @androidx.room.Query("SELECT * FROM Meal WHERE idMeal IN (:mealId)")
+    fun loadAllById(mealId: String): LiveData<Meal>
 }
