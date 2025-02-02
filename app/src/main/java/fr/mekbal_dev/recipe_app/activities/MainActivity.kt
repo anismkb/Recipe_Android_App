@@ -5,12 +5,23 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import fr.mekbal_dev.recipe_app.R
+import fr.mekbal_dev.recipe_app.database.MealDataBase
+import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
+import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModelFactory
 
 class MainActivity : AppCompatActivity() {
+
+    val viewModel : HomeViewModel by lazy {
+        val database = MealDataBase.getInstance(this)
+        val homeViewModelProviderFactory = HomeViewModelFactory(database)
+        ViewModelProvider(this, homeViewModelProviderFactory)[HomeViewModel::class.java]
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

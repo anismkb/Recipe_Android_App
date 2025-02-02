@@ -33,7 +33,7 @@ class CategoryMealsActivity : AppCompatActivity() {
     private fun observeMealsByCategory() {
         mealsByCategoryViewModel.observeMealsByCategory().observe(this, Observer{ MealsList ->
             mealscategoryAdapter.setMealsList(MealsList)
-            binding.cont.text = HomeFragment.NAME_CATEGORY +" : "+ mealscategoryAdapter.itemCount.toString()
+            binding.cont.text = mealscategoryAdapter.itemCount.toString()+ " Recipes"
         })
     }
 

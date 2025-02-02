@@ -16,15 +16,18 @@ import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.activities.CategoryMealsActivity
+import fr.mekbal_dev.recipe_app.activities.MainActivity
 
 import fr.mekbal_dev.recipe_app.activities.MealActivity
 import fr.mekbal_dev.recipe_app.adapter.Category_Adapter
 import fr.mekbal_dev.recipe_app.adapter.Popular_Adapter
+import fr.mekbal_dev.recipe_app.database.MealDataBase
 import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
 import fr.mekbal_dev.recipe_app.pojo.Category
 import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
+import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModelFactory
 
 
 class HomeFragment : Fragment() {
@@ -39,12 +42,12 @@ class HomeFragment : Fragment() {
         const val MEAL_ID = "fr.mekbal_dev.recipe_app.idMeal"
         const val MEAL_NAME = "fr.mekbal_dev.recipe_app.nameMeal"
         const val MEAL_THUMB = "fr.mekbal_dev.recipe_app.thumbMeal"
-        const val NAME_CATEGORY = "fr.mekbal_dev.recipe_app.nameCategory"
+        const val NAME_CATEGORY = "fr.mekbal_dev.recipe_app.strCategory"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homemvvm = ViewModelProvider(this).get(HomeViewModel::class.java)
+        homemvvm = (activity as MainActivity).viewModel
         popularAdapter = Popular_Adapter()
     }
 

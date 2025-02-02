@@ -9,7 +9,7 @@ import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
 
 class MealsCategory_Adapter():RecyclerView.Adapter<MealsCategory_Adapter.CategoryMealsViewHolder>(){
 
-    private var mealsList = ArrayList<MealsByCategory>()
+    var mealsList = ArrayList<MealsByCategory>()
 
     fun setMealsList(mealsList : List<MealsByCategory>){
         this.mealsList = mealsList as ArrayList<MealsByCategory>
