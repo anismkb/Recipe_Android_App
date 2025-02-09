@@ -9,6 +9,9 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import fr.mekbal_dev.recipe_app.activities.MainActivity
 import fr.mekbal_dev.recipe_app.adapter.FavCategory_Adapter
 import fr.mekbal_dev.recipe_app.databinding.FragmentFavoriteBinding
@@ -16,6 +19,7 @@ import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
 import fr.mekbal_dev.recipe_app.pojo.Meal
 import fr.mekbal_dev.recipe_app.pojo.meal_list
 import fr.mekbal_dev.recipe_app.viewmodel.HomeViewModel
+
 
 class FavoriteFragment : Fragment() {
     // TODO: Rename and change types of parameters
@@ -43,6 +47,27 @@ class FavoriteFragment : Fragment() {
 
         prepareReycleView()
         observeFavMealLiveData()
+
+        val ItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.RIGHT or ItemTouchHelper.LEFT
+        ){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                ViewModel.deleteFavMeal(favoritesAdapter.differ.currentList[position])
+
+                Snackbar.make(requireView(), "Meal deleted succefuly", Snackbar.LENGTH_LONG).show()
+            }
+        }
+        ItemTouchHelper(ItemTouchHelperCallback).attachToRecyclerView(binding.reycleFav)
     }
 
     private fun prepareReycleView() {
@@ -57,6 +82,10 @@ class FavoriteFragment : Fragment() {
         ViewModel.observeFavoritMealLiveData().observe(viewLifecycleOwner, Observer { meals->
             favoritesAdapter.differ.submitList(meals)
         })
+    }
+
+    private fun gestureDeleteFavorit(){
+
     }
 
 

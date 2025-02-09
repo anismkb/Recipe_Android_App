@@ -3,7 +3,6 @@ package fr.mekbal_dev.recipe_app.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.AsyncListUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -17,13 +16,11 @@ class FavCategory_Adapter: RecyclerView.Adapter<FavCategory_Adapter.FavoritesMea
     private val diffUtil = object : DiffUtil.ItemCallback<Meal>(){
         //compare juste the primarykey
         override fun areItemsTheSame(oldItem: Meal, newItem: Meal): Boolean {
-            TODO("Not yet implemented")
             return oldItem.idMeal == newItem.idMeal
         }
 
         //compare items
         override fun areContentsTheSame(oldItem: Meal, newItem: Meal): Boolean {
-            TODO("Not yet implemented")
             return oldItem == newItem
         }
     }
@@ -49,6 +46,11 @@ class FavCategory_Adapter: RecyclerView.Adapter<FavCategory_Adapter.FavoritesMea
 
     override fun getItemCount(): Int {
         return differ.currentList.size
+    }
+
+    fun removeItem(indice: Int){
+
+        differ.currentList.removeAt(indice)
     }
 
 }

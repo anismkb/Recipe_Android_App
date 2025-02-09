@@ -1,11 +1,16 @@
 package fr.mekbal_dev.recipe_app.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import fr.mekbal_dev.recipe_app.HomeFragment
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.MEAL_ID
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.MEAL_NAME
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.MEAL_THUMB
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.NAME_CATEGORY
 import fr.mekbal_dev.recipe_app.adapter.MealsCategory_Adapter
 import fr.mekbal_dev.recipe_app.databinding.ActivityCategoryMealsBinding
 
@@ -28,6 +33,17 @@ class CategoryMealsActivity : AppCompatActivity() {
         mealsByCategoryViewModel.getMealsByCategoy(intent.getStringExtra(HomeFragment.NAME_CATEGORY)!!)
         observeMealsByCategory()
 
+        onClickrecipe()
+    }
+
+    private fun onClickrecipe() {
+        mealscategoryAdapter.mealSelected={meal->
+            val intent = Intent(this, MealActivity::class.java)
+            intent.putExtra(MEAL_ID, meal.idMeal)
+            intent.putExtra(MEAL_NAME, meal.strMeal)
+            intent.putExtra(MEAL_THUMB, meal.strMealThumb)
+            startActivity(intent)
+        }
     }
 
     private fun observeMealsByCategory() {
