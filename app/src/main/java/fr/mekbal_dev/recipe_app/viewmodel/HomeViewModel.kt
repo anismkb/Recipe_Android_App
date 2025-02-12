@@ -26,7 +26,7 @@ class HomeViewModel(
     private var popularItemsLiveData = MutableLiveData<List<MealsByCategory>>()
     private var categoriesLiveData = MutableLiveData<List<Category>>()
     private var FavoritMealsLiveData = mealdatabase.mealDao().getAll()
-
+    private var searchMealLiveData = MutableLiveData<List<Meal>>()
 
     fun getRandomMeal(){
         RetrofitInstance.api.getRandomMeal().enqueue(object : retrofit2.Callback<meal_list>{
@@ -73,6 +73,19 @@ class HomeViewModel(
         })
     }
 
+    fun getSearchMeal(MealName : String){
+        RetrofitInstance.api.getserchByName(MealName).enqueue((object :  retrofit2.Callback<meal_list> {
+            override fun onResponse(call: Call<meal_list>, response: Response<meal_list>) {
+                if(response.body()!=null){
+                    searchMealLiveData.value = response.body()!!.meals
+                }
+            }
+            override fun onFailure(call: Call<meal_list>, t: Throwable) {
+                Log.d("No meal disponible with this name !!", t.message.toString())
+            }
+        }))
+    }
+
     fun observeRandomMealLivedata(): LiveData<Meal> {
         return randomMealLiveData
     }
@@ -89,6 +102,10 @@ class HomeViewModel(
         return FavoritMealsLiveData
     }
 
+    fun observeSearchMealLiveData(): LiveData<List<Meal>>{
+        return searchMealLiveData
+    }
+
     fun deleteFavMeal(meal: Meal){
         viewModelScope.launch(Dispatchers.IO) {
             mealdatabase.mealDao().DeleteMeal(meal)
@@ -100,5 +117,7 @@ class HomeViewModel(
             mealdatabase.mealDao().InsertMeal(meal)
         }
     }
+
+
 
 }

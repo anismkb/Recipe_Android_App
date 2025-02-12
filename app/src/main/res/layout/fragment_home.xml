@@ -39,7 +39,7 @@
                         android:textSize="@dimen/_25ssp"/>
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/imageView_search"
                         android:layout_width="@dimen/_25sdp"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"

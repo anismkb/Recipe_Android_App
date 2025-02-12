@@ -1,5 +1,6 @@
 package fr.mekbal_dev.recipe_app
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,7 +13,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.MEAL_ID
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.MEAL_NAME
+import fr.mekbal_dev.recipe_app.HomeFragment.Companion.MEAL_THUMB
 import fr.mekbal_dev.recipe_app.activities.MainActivity
+import fr.mekbal_dev.recipe_app.activities.MealActivity
 import fr.mekbal_dev.recipe_app.adapter.FavCategory_Adapter
 import fr.mekbal_dev.recipe_app.databinding.FragmentFavoriteBinding
 import fr.mekbal_dev.recipe_app.databinding.FragmentHomeBinding
@@ -47,6 +52,7 @@ class FavoriteFragment : Fragment() {
 
         prepareReycleView()
         observeFavMealLiveData()
+        onClickRecipe()
 
         val ItemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -68,6 +74,16 @@ class FavoriteFragment : Fragment() {
             }
         }
         ItemTouchHelper(ItemTouchHelperCallback).attachToRecyclerView(binding.reycleFav)
+    }
+
+    private fun onClickRecipe() {
+        favoritesAdapter.mealSelected={meal->
+            val intent = Intent(context, MealActivity::class.java)
+            intent.putExtra(MEAL_ID, meal.idMeal)
+            intent.putExtra(MEAL_NAME, meal.strMeal)
+            intent.putExtra(MEAL_THUMB, meal.strMealThumb)
+            startActivity(intent)
+        }
     }
 
     private fun prepareReycleView() {

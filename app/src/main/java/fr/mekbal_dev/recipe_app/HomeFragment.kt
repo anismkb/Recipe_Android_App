@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
@@ -77,6 +78,13 @@ class HomeFragment : Fragment() {
         prepareAllCategoriesItemsRecycleViews()
 
         categoryClick()
+        onSearchItemClick()
+    }
+
+    private fun onSearchItemClick() {
+        binding.imageViewSearch.setOnClickListener{
+            findNavController().navigate(R.id.action_homeFragment_to_searchFragment)
+        }
     }
 
     private fun categoryClick() {

@@ -8,10 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fr.mekbal_dev.recipe_app.databinding.MealItemBinding
 import fr.mekbal_dev.recipe_app.pojo.Meal
+import fr.mekbal_dev.recipe_app.pojo.MealsByCategory
 
 class FavCategory_Adapter: RecyclerView.Adapter<FavCategory_Adapter.FavoritesMealAdapterViewHolder>(){
 
     inner class FavoritesMealAdapterViewHolder(val binding: MealItemBinding): RecyclerView.ViewHolder(binding.root)
+
+    var mealSelected : ((Meal)->Unit)? =null
 
     private val diffUtil = object : DiffUtil.ItemCallback<Meal>(){
         //compare juste the primarykey
@@ -42,6 +45,9 @@ class FavCategory_Adapter: RecyclerView.Adapter<FavCategory_Adapter.FavoritesMea
         val meal = differ.currentList[position]
         Glide.with(holder.itemView).load(meal.strMealThumb).into(holder.binding.imageMealsByCategory)
         holder.binding.nameItem.text = meal.strMeal
+        holder.itemView.setOnClickListener {
+            mealSelected?.invoke(differ.currentList[position])
+        }
     }
 
     override fun getItemCount(): Int {

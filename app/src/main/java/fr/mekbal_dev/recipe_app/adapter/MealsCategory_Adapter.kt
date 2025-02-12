@@ -39,7 +39,7 @@ class MealsCategory_Adapter():RecyclerView.Adapter<MealsCategory_Adapter.Categor
             .into(holder.binding.imageMealsByCategory)
         holder.binding.nameItem.text = mealsList[position].strMeal
         holder.itemView.setOnClickListener {
-            mealSelected?.invoke(mealsList[position]) // ✅ Évite les crashs si `mealSelected` est null
+            mealSelected?.invoke(mealsList[position])
         }
     }
 
